@@ -51,6 +51,30 @@ On first launch cfetch walks you through picking your ASCII art, size, colors, a
 
 ---
 
+## custom modules
+
+cfetch lets you add your own fields — either static key/value pairs or live shell commands that run on every fetch.
+
+![cfetch logo](screenshots/CFETCH_logo_v4.png)
+
+During the setup wizard (or when you re-run `cfetch --setup`), you'll be prompted to add custom modules. Choose a label, then decide whether it's a static value or a shell command. Commands are run at fetch time and their stdout becomes the displayed value.
+
+![Custom modules setup — adding a shell command](screenshots/custom_modules_setup.png)
+
+In the example above, a `Date` module is added using `date +"%Y-%m-%d %H:%M:%S"` — it shows the current date and time on every run.
+
+You can also hand-edit custom fields directly in `~/.config/cfetch/config`:
+
+```ini
+custom_static=Editor|neovim
+custom_cmd=Date|date +%Y-%m-%d
+custom_cmd=Weather|curl -s wttr.in?format=3
+```
+
+The format is `label|value` for static fields and `label|command` for shell commands. Multiple `custom_static` and `custom_cmd` lines are supported and displayed in the order they appear.
+
+---
+
 ## color editor
 
 `cfetch --color-editor` opens a TUI for painting your logo. Click a color from the 256-color palette, then click glyphs in the logo to paint them. Colors get saved to a `.colors` sidecar file next to your ASCII art and applied automatically on every run.
@@ -78,7 +102,8 @@ On first launch cfetch walks you through picking your ASCII art, size, colors, a
 ```sh
 cfetch                  # run it
 cfetch --setup          # redo the setup wizard
-cfetch --color-editor   # open the color editor
+cfetch --colors         # open the color editor
+cfetch --color-editor   # alias for --colors
 cfetch --no-color       # plain output, no escape codes
 cfetch --json           # json output
 cfetch --help
